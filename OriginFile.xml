@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<option>
+    <author> Nrot </author>
+    <Version> 0.1a </Version>
+    <PathToImage>~/Изображения/Test_fone/</PathToImage>
+    <PathLog>./</PathLog>
+    <time>600</time>
+</option>
