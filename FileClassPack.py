@@ -1,4 +1,4 @@
-__author__ = 'nrot'
+﻿__author__ = 'nrot'
 
 # -*- coding: utf-8 -*-
 
@@ -33,10 +33,10 @@ class DoubleLog(object):
     def __del__(self):
         self.objlogfile.close()
 
-    def write(self, aType='simple', text='nothing', time=10):
+    def write(self, aType='simple', text='nothing', aTime=10):
         if aType == 'connect':
-            print('Can`t connect to ', str(text), '\nwait ' + time + 'min and i try connect again.\n')
-            self.objlogfile.write('Can`t connect to ' + str(text) + '\nwait ' + time + ' min and i try connect again.\n')
+            print('Can`t connect to ', str(text), '\nwait ' + aTime + 'min and i try connect again.\n')
+            self.objlogfile.write('Can`t connect to ' + str(text) + '\nwait ' + aTime + ' min and i try connect again.\n')
             self.objlogfile.write(
                 '#######################################################################################################\n')
             self.objlogfile.write('\n')
@@ -45,6 +45,9 @@ class DoubleLog(object):
             self.objlogfile.write(text)
             self.objlogfile.write('\n')
         return 'Done'
+    
+    def save(self):
+        self.objlogfile.flush()
 
 
 class OPtionsFileClass(object):
@@ -97,6 +100,8 @@ class OPtionsFileClass(object):
     def GetOptiions(self):
         try:
             self.PathToImage = os.path.expanduser(self.parsedoption.findall('PathToImage')[0].text)
+            if os.path.exists(self.PathToImage) != True:
+                os.makedirs(self.PathToImage)
             if self.OriginVersion != self.OptionVersion:
                 self.Version = 'Different version.'
             else:

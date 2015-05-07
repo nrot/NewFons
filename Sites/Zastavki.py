@@ -10,17 +10,18 @@ from lxml import html
 
 def Zastavki(LogFile, Options):
 
+    adr = 'http://www.zastavki.com/rus/Anime/'
+
     try:
         res = requests.get('http://www.zastavki.com/rus/Anime/')
         parsed_body = html.fromstring(res.text)
         page_info = parsed_body.xpath('//td[@id="at-all-info"]/*')
         max_page = int(page_info[1].text)
-        adr = 'http://www.zastavki.com/rus/Anime/'
         now_page = random.randint(1, max_page-1)
         adr = adr + str(now_page) + '/'
         LogFile.write(text=adr)
     except:
-        LogFile.write(aType='connect', text=adr, time=int(Options.TimeToSleep/60))
+        LogFile.write(aType='connect', text=adr, aTime=int(Options.TimeToSleep/60))
         return 'Error connect'
 
     res = requests.get(adr)

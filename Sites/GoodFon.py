@@ -9,18 +9,17 @@ from lxml import html
 
 
 def GoodFon(LogFile, Options):
-
+    adr = 'http://www.goodfon.ru/catalog/anime/index-'
     try:
         res = requests.get('http://www.goodfon.ru/catalog/anime/index-1.html')
         parsed_body = html.fromstring(res.text)
         page_info = parsed_body.xpath('//div[@class="pageinfo"]/div')
         max_page = int(page_info[0].text)
-        adr = 'http://www.goodfon.ru/catalog/anime/index-'
         now_page = random.randint(1, max_page-1)
         adr = adr + str(now_page) + '.html'
         LogFile.write(text=adr)
     except:
-        LogFile.write(aType='connect', text=adr, time=int(Options.TimeToSleep/60))
+        LogFile.write(aType='connect', text=str(adr), aTime=int(Options.TimeToSleep/60))
         return 'Error connect'
 
     res = requests.get(adr)

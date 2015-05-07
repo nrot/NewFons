@@ -8,8 +8,6 @@ import FileClassPack
 import ChoseModel
 
 
-#PATH_TO_IMG_LIB = '/media/nrot/Free/GoogleDrive/КАРТИНКИ/'
-
 def main():
 
     Option = FileClassPack.OPtionsFileClass()
@@ -39,9 +37,10 @@ def main():
         # f.write(img_internet.content)
         f.close()
 
-        log.write(text='All Done in this step! Wait ' + Option.TimeToSleep + ' min.')
+        log.write(text=str('All Done in this step! Wait ' + str(Option.TimeToSleep/60) + ' min.'))
         log.write(text='#====================================#\n')
-
+        log.save()
+        
         time.sleep(Option.TimeToSleep)
 
     del log

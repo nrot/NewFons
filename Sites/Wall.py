@@ -3,7 +3,7 @@ __author__ = 'nrot'
 # -*- coding: utf-8 -*-
 
 import random
-
+import re
 import requests
 from lxml import html
 
@@ -20,7 +20,7 @@ def Wall(LogFile, Options):
         LogFile.write(text=adr)
         LogFile.write(text=adr)
     except:
-        LogFile.write(aType='connect', text=adr, time=int(Options.TimeToSleep/60))
+        LogFile.write(aType='connect', text=adr, aTime=int(Options.TimeToSleep/60))
         return 'Error connect'
 
     res = requests.get(adr)
@@ -33,15 +33,15 @@ def Wall(LogFile, Options):
     img_html = 'http://wall.alphacoders.com/' + str(chose_img[now_image].attrib['href'])
 
     LogFile.write(text=img_html)
-
+    ReExp = re.compile('([0-9]+)$')
+    img_name = ReExp.search(img_html)
+    img_name = img_name.group() + '.jpg'
+    
     res = requests.get(img_html)
     parsed_body = html.fromstring(res.text)
 
     pre_end_link = parsed_body.xpath('//span[@class="btn btn-success download-button"]')
     end_link = pre_end_link[0].attrib['data-href']
-
-    img_name = parsed_body.xpath('//table[@class="table table-striped table-condensed"]/tbody/*')[3][1].getchildren()[0].getchildren()
-    img_name = str(img_name[0].text) + '.jpg'
 
     LogFile.write(text=end_link)
 
