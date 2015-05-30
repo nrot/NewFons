@@ -32,7 +32,7 @@ def main():
             continue
 
         img_internet[0].raw.decode_content = True
-        with open(str(PATH_TO_IMG_LIB + img_internet[1]), 'wb') as f:
+        with open(PATH_TO_IMG_LIB + unicode(img_internet[1]), 'wb') as f:
             shutil.copyfileobj(img_internet[0].raw, f)
         # f.write(img_internet.content)
         f.close()

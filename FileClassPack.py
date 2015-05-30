@@ -101,7 +101,7 @@ class OPtionsFileClass(object):
     def GetOptiions(self):
         try:
             self.PathToImage = os.path.expanduser(self.parsedoption.findall('PathToImage')[0].text)
-            self.PathToImage = unicodedata.normalize('NFKD', self.PathToImage).encode('ascii', 'ignore')
+            #self.PathToImage = unicodedata.normalize('NFKD', self.PathToImage).encode('ascii', 'ignore')
             if os.path.exists(self.PathToImage) != True:
                 os.makedirs(self.PathToImage)
             if self.OriginVersion != self.OptionVersion:
