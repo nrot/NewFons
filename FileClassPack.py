@@ -6,6 +6,7 @@ import os
 import time
 import shutil
 import xml.etree.ElementTree as XMLElementTree
+import unicodedata
 from lxml import etree
 
 
@@ -100,6 +101,7 @@ class OPtionsFileClass(object):
     def GetOptiions(self):
         try:
             self.PathToImage = os.path.expanduser(self.parsedoption.findall('PathToImage')[0].text)
+            self.PathToImage = unicodedata.normalize('NFKD', self.PathToImage).encode('ascii', 'ignore')
             if os.path.exists(self.PathToImage) != True:
                 os.makedirs(self.PathToImage)
             if self.OriginVersion != self.OptionVersion:

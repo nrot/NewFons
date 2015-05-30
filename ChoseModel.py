@@ -10,8 +10,6 @@ import BadFon
 import Zastavki
 
 def Chose(LogFile, Options):
-
-        print(sys.path)
         site = random.randint(1, 4)
         if site == 1:
             def_img = GoodFon.GoodFon(LogFile, Options)
