@@ -6,7 +6,7 @@ import os
 import time
 import shutil
 import xml.etree.ElementTree as XMLElementTree
-import unicodedata
+import glob
 from lxml import etree
 
 
@@ -111,7 +111,8 @@ class OPtionsFileClass(object):
             self.OptionPathLog = os.path.expanduser(self.parsedoption.findall('PathLog')[0].text)
             self.OriginPathLog = os.path.expanduser(self.parsedorigin.findall('PathLog')[0].text)
             self.TimeToSleep = int(self.parsedoption.findall('time')[0].text)
-            self.AmountImageSave = int(self.parsedoption.findall('amountImage')[0].text)
+            self.AmountImageSave = int(self.parsedoption.findall('amountImageSave')[0].text)
+            self.ImageAmount = int(self.parsedoption.findall('amountImage')[0].text)
         except:
             self.Error = 'second parsed error'
     def EditOptions(self, Setting, NewValue):
@@ -120,7 +121,14 @@ class OPtionsFileClass(object):
         else:
             #self.cachestr = unicodedata.normalize('NFKD', str(self.AmountImageSave)).encode('ascii', 'ignore')
             self.cachestr = self.parsedoption.findall(str(Setting))[0]
-            self.cachestr = str(NewValue)
+            self.cachestr.text = str(NewValue)
             self.GetOptiions()
             del self.cachestr
             return True
+    def FindImage(self):
+        os.chdir(self.PathToImage)
+        self.jpgAmount = len(glob.glob('*.jpg'))
+        self.jpgAmount += len(glob.glob('*.jpeg'))
+        self.pngAmount = len(glob.glob('*.png'))
+        self.EditOptions('amountImage', self.jpgAmount+self.pngAmount)
+        del self.jpgAmount, self.pngAmount

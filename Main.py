@@ -24,6 +24,7 @@ def main():
     if log.Error == 'Open Error':
         return 'Open Error'
 
+    Option.FindImage()
     while 1:
         print(log.path)
         img_internet = ChoseModel.Chose(log, Option)
@@ -41,7 +42,7 @@ def main():
         log.write(text='#====================================#\n')
         log.save()
 
-        Option.EditOptions('amountImage', Option.AmountImageSave + 1)
+        Option.EditOptions('amountImageSave', Option.AmountImageSave + 1)
         
         time.sleep(Option.TimeToSleep)
 
