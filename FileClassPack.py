@@ -62,9 +62,9 @@ class OPtionsFileClass(object):
             self.originfile = open(self.originpath, 'r')
         except:
             print('Can`t open ', self.path, self.namefile)
-            self.CommandToKdeError = 'kdialog --error \'Can`t open file ' + self.originpath + '\nProgram will close. \' --title \'New Fons\''
-            print(self.CommandToKdeError)
-            os.system(self.CommandToKdeError)
+            #self.CommandToKdeError = 'kdialog --error \'Can`t open file ' + self.originpath + '\nProgram will close. \' --title \'New Fons\''
+            #print(self.CommandToKdeError)
+            #os.system(self.CommandToKdeError)
             self.Error = 'Open Error'
         try:
             if os.path.exists(self.path + self.namefile) == True:
@@ -74,9 +74,9 @@ class OPtionsFileClass(object):
             self.Error = 'Done'
         except:
             print('Can`t open ', self.path, self.namefile)
-            self.CommandToKdeError = 'kdialog --error \'Can`t open file ' + self.path + self.namefile + '\nProgram will close. \' --title \'New Fons\''
-            print(self.CommandToKdeError)
-            os.system(self.CommandToKdeError)
+            #self.CommandToKdeError = 'kdialog --error \'Can`t open file ' + self.path + self.namefile + '\nProgram will close. \' --title \'New Fons\''
+            #print(self.CommandToKdeError)
+            #os.system(self.CommandToKdeError)
             self.Error = 'Open Error'
         print(self.path + self.namefile)
         self.parser = etree.XMLParser(recover=True)
@@ -111,5 +111,16 @@ class OPtionsFileClass(object):
             self.OptionPathLog = os.path.expanduser(self.parsedoption.findall('PathLog')[0].text)
             self.OriginPathLog = os.path.expanduser(self.parsedorigin.findall('PathLog')[0].text)
             self.TimeToSleep = int(self.parsedoption.findall('time')[0].text)
+            self.AmountImageSave = int(self.parsedoption.findall('amountImage')[0].text)
         except:
             self.Error = 'second parsed error'
+    def EditOptions(self, Setting, NewValue):
+        if self.parsedoption.findall(str(Setting)) == []:
+          return 'Not Have yhis Setting'
+        else:
+            #self.cachestr = unicodedata.normalize('NFKD', str(self.AmountImageSave)).encode('ascii', 'ignore')
+            self.cachestr = self.parsedoption.findall(str(Setting))[0]
+            self.cachestr = str(NewValue)
+            self.GetOptiions()
+            del self.cachestr
+            return True

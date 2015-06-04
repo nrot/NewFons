@@ -40,6 +40,8 @@ def main():
         log.write(text=str('All Done in this step! Wait ' + str(Option.TimeToSleep/60) + ' min.'))
         log.write(text='#====================================#\n')
         log.save()
+
+        Option.EditOptions('amountImage', Option.AmountImageSave + 1)
         
         time.sleep(Option.TimeToSleep)
 

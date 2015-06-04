@@ -5,4 +5,5 @@
     <PathToImage>~/Pictures/Test_fone/</PathToImage>
     <PathLog>./</PathLog>
     <time>600</time>
+    <amountImage>0</amountImage>
 </option>
