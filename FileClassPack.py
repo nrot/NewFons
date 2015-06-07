@@ -26,9 +26,9 @@ class DoubleLog(object):
             self.Error = 'Done'
         except:
             print('Can`t open ', self.path, namefile)
-            self.CommandToKdeError = 'kdialog --error \'Can`t open file ' + self.path + namefile + ' \n Program will close. \' --title \'New Fons\''
-            print(self.CommandToKdeError)
-            os.system(self.CommandToKdeError)
+            #self.CommandToKdeError = 'kdialog --error \'Can`t open file ' + self.path + namefile + ' \n Program will close. \' --title \'New Fons\''
+            #print(self.CommandToKdeError)
+            #os.system(self.CommandToKdeError)
             self.Error = 'Open Error'
 
     def __del__(self):
@@ -36,8 +36,8 @@ class DoubleLog(object):
 
     def write(self, aType='simple', text='nothing', aTime=10):
         if aType == 'connect':
-            print('Can`t connect to ', str(text), '\nwait ' + aTime + 'min and i try connect again.\n')
-            self.objlogfile.write('Can`t connect to ' + str(text) + '\nwait ' + aTime + ' min and i try connect again.\n')
+            print('Can`t connect to ', str(text), '\nwait ' + str(aTime) + 'min and i try connect again.\n')
+            self.objlogfile.write('Can`t connect to ' + str(text) + '\nwait ' + str(aTime) + ' min and i try connect again.\n')
             self.objlogfile.write(
                 '#######################################################################################################\n')
             self.objlogfile.write('\n')
