@@ -36,7 +36,7 @@ class DoubleLog(object):
 
     def write(self, aType='simple', text='nothing', aTime=10):
         if aType == 'connect':
-            print('Can`t connect to ', str(text), '\nwait ' + str(aTime) + 'min and i try connect again.\n')
+            print('Can`t connect to ', str(text), '\n wait ' + str(aTime) + 'min and i try connect again.\n')
             self.objlogfile.write('Can`t connect to ' + str(text) + '\nwait ' + str(aTime) + ' min and i try connect again.\n')
             self.objlogfile.write(
                 '#######################################################################################################\n')
@@ -51,7 +51,7 @@ class DoubleLog(object):
         self.objlogfile.flush()
 
 
-class OPtionsFileClass(object):
+class OptionsFileClass(object):
     def __init__(self):
         self.path = './'
         self.namefile = 'Option.xml'
@@ -113,11 +113,12 @@ class OPtionsFileClass(object):
             self.TimeToSleep = int(self.parsedoption.findall('time')[0].text)
             self.AmountImageSave = int(self.parsedoption.findall('amountImageSave')[0].text)
             self.ImageAmount = int(self.parsedoption.findall('amountImage')[0].text)
+            self.MaxAmountImage = int(self.parsedoption.findall('maxImage')[0].text)
         except:
             self.Error = 'second parsed error'
     def EditOptions(self, Setting, NewValue):
         if self.parsedoption.findall(str(Setting)) == []:
-          return 'Not Have yhis Setting'
+          return 'Not Have this Setting'
         else:
             #self.cachestr = unicodedata.normalize('NFKD', str(self.AmountImageSave)).encode('ascii', 'ignore')
             self.cachestr = self.parsedoption.findall(str(Setting))[0]
@@ -127,8 +128,23 @@ class OPtionsFileClass(object):
             return True
     def FindImage(self):
         os.chdir(self.PathToImage)
-        self.jpgAmount = len(glob.glob('*.jpg'))
-        self.jpgAmount += len(glob.glob('*.jpeg'))
-        self.pngAmount = len(glob.glob('*.png'))
-        self.EditOptions('amountImage', self.jpgAmount+self.pngAmount)
-        del self.jpgAmount, self.pngAmount
+        jpgAmount = len(glob.glob('*.jpg'))
+        jpgAmount += len(glob.glob('*.jpeg'))
+        pngAmount = len(glob.glob('*.png'))
+        self.EditOptions('amountImage', jpgAmount + pngAmount)
+        return jpgAmount + pngAmount
+
+    def OldestImageDelete(self, amount=1):
+        os.chdir(self.PathToImage)
+        imageFiles = glob.glob('*.jpg')
+        imageFiles += glob.glob('*.jpeg')
+        imageFiles += glob.glob('*.png')
+        imageCreateTime = []
+        DeleteName = []
+        for i in imageFiles:
+            imageCreateTime.append(os.path.getctime(i))
+        for i in range(0, amount):
+            IndexDel = imageCreateTime.index(min(imageCreateTime))
+            DeleteName.append(imageFiles[IndexDel])
+            os.remove(imageFiles[IndexDel])
+        return DeleteName

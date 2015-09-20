@@ -10,7 +10,7 @@ import ChoseModel
 
 def main():
 
-    Option = FileClassPack.OPtionsFileClass()
+    Option = FileClassPack.OptionsFileClass()
     Option.GetOptiions()
     if Option.Error != 'Done':
         OptionError = open('./OptionErrorLog.txt', 'w')
@@ -27,6 +27,10 @@ def main():
     Option.FindImage()
     while 1:
         print(log.path)
+        if Option.FindImage() > Option.MaxAmountImage and Option.MaxAmountImage != 0:
+            DeleteItem = Option.OldestImageDelete()
+            log.write(text=str('Delete: ' + str(DeleteItem)))
+            continue
         img_internet = ChoseModel.Chose(log, Option)
         if img_internet == 'Error connect':
             time.sleep(Option.TimeToSleep)
@@ -37,7 +41,6 @@ def main():
             shutil.copyfileobj(img_internet[0].raw, f)
         # f.write(img_internet.content)
         f.close()
-
         log.write(text=str('All Done in this step! Wait ' + str(Option.TimeToSleep/60) + ' min.'))
         log.write(text='#====================================#\n')
         log.save()
