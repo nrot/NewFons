@@ -3,7 +3,7 @@
     <author> Nrot </author>
     <Version> 0.1a </Version>
     <PathToImage>~/Pictures/Test_fone/</PathToImage>
-    <PathLog>./</PathLog>
+    <PathLog>~/Log/NewFons/</PathLog>
     <time>600</time>
     <amountImageSave>0</amountImageSave>
     <amountImage>0</amountImage>

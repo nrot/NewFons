@@ -17,10 +17,10 @@ class DoubleLog(object):
             if (os.path.getsize(self.path + namefile) > 10240):
                 os.remove(self.path + namefile)
         except:
-            if os.path.exists(self.path) == 0:
-                os.mkdir(self.path)
+            if not os.path.exists(self.path):
+                os.makedirs(self.path)
         try:
-            self.objlogfile = open(str(self.path + namefile), 'a')
+            self.objlogfile = open(str(self.path + '\\' + namefile), 'a')
             self.objlogfile.write(time.ctime(time.time()))
             self.objlogfile.write('\n')
             self.Error = 'Done'
@@ -36,8 +36,8 @@ class DoubleLog(object):
 
     def write(self, aType='simple', text='nothing', aTime=10):
         if aType == 'connect':
-            print('Can`t connect to ', str(text), '\n wait ' + str(aTime) + 'min and i try connect again.\n')
-            self.objlogfile.write('Can`t connect to ' + str(text) + '\nwait ' + str(aTime) + ' min and i try connect again.\n')
+            print(str('Can`t connect to ' + str(text) + "\n wait " + str(aTime) + ' min and i try connect again.\n'))
+            self.objlogfile.write('Can`t connect to ' + str(text) + '\n' + 'wait ' + str(aTime) + ' min and i try connect again.\n')
             self.objlogfile.write(
                 '#######################################################################################################\n')
             self.objlogfile.write('\n')
@@ -53,36 +53,36 @@ class DoubleLog(object):
 
 class OptionsFileClass(object):
     def __init__(self):
-        self.path = './'
+        self.path = os.path.realpath('./') + '\\'
         self.namefile = 'Option.xml'
-        self.originpath = "./OriginFile.xml"
+        self.originpath = os.path.realpath("./OriginFile.xml")
         if os.path.exists(self.path) == 0:
-            os.mkdir(self.path)
+            os.makedirs(self.path)
         try:
             self.originfile = open(self.originpath, 'r')
         except:
-            print('Can`t open ', self.path, self.namefile)
+            print(str('Can`t open ' + self.path + self.namefile))
             #self.CommandToKdeError = 'kdialog --error \'Can`t open file ' + self.originpath + '\nProgram will close. \' --title \'New Fons\''
             #print(self.CommandToKdeError)
             #os.system(self.CommandToKdeError)
             self.Error = 'Open Error'
         try:
-            if os.path.exists(self.path + self.namefile) == True:
+            if os.path.exists(self.path + self.namefile):
                 self.optionsfile = open(str(self.path + self.namefile), 'r')
             else:
                 shutil.copy(self.originpath, self.path + self.namefile)
             self.Error = 'Done'
         except:
-            print('Can`t open ', self.path, self.namefile)
+            print(str('Can`t open ' + self.path + self.namefile))
             #self.CommandToKdeError = 'kdialog --error \'Can`t open file ' + self.path + self.namefile + '\nProgram will close. \' --title \'New Fons\''
             #print(self.CommandToKdeError)
             #os.system(self.CommandToKdeError)
             self.Error = 'Open Error'
         print(self.path + self.namefile)
         self.parser = etree.XMLParser(recover=True)
-        if self.path == './':
+        try:
             self.parsedoption = XMLElementTree.parse(self.namefile, parser=self.parser)
-        else:
+        except:
             self.parsedoption = XMLElementTree.parse(self.path + self.namefile, parser=self.parser)
         self.parsedorigin = XMLElementTree.parse(self.originpath, parser=self.parser)
 
@@ -100,7 +100,7 @@ class OptionsFileClass(object):
 
     def GetOptiions(self):
         try:
-            self.PathToImage = os.path.expanduser(self.parsedoption.findall('PathToImage')[0].text)
+            self.PathToImage = os.path.realpath(os.path.expanduser(self.parsedoption.findall('PathToImage')[0].text)) + '\\'
             #self.PathToImage = unicodedata.normalize('NFKD', self.PathToImage).encode('ascii', 'ignore')
             if os.path.exists(self.PathToImage) != True:
                 os.makedirs(self.PathToImage)
@@ -108,8 +108,8 @@ class OptionsFileClass(object):
                 self.Version = 'Different version.'
             else:
                 self.Version = self.OptionVersion
-            self.OptionPathLog = os.path.expanduser(self.parsedoption.findall('PathLog')[0].text)
-            self.OriginPathLog = os.path.expanduser(self.parsedorigin.findall('PathLog')[0].text)
+            self.OptionPathLog = os.path.realpath(os.path.expanduser(self.parsedoption.findall('PathLog')[0].text))
+            self.OriginPathLog = os.path.realpath(os.path.expanduser(self.parsedorigin.findall('PathLog')[0].text))
             self.TimeToSleep = int(self.parsedoption.findall('time')[0].text)
             self.AmountImageSave = int(self.parsedoption.findall('amountImageSave')[0].text)
             self.ImageAmount = int(self.parsedoption.findall('amountImage')[0].text)
@@ -121,10 +121,9 @@ class OptionsFileClass(object):
           return 'Not Have this Setting'
         else:
             #self.cachestr = unicodedata.normalize('NFKD', str(self.AmountImageSave)).encode('ascii', 'ignore')
-            self.cachestr = self.parsedoption.findall(str(Setting))[0]
-            self.cachestr.text = str(NewValue)
+            cachestr = self.parsedoption.findall(str(Setting))[0]
+            cachestr.text = str(NewValue)
             self.GetOptiions()
-            del self.cachestr
             return True
     def FindImage(self):
         os.chdir(self.PathToImage)

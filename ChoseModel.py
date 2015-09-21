@@ -3,11 +3,11 @@ __author__ = 'nrot'
 import random
 import sys
 import os
-sys.path.insert(2, os.getcwd() + '\\Sites')
-import Wall
-import GoodFon
-import BadFon
-import Zastavki
+#sys.path.insert(2, os.getcwd() + '\\Sites')
+import Sites.Wall as Wall
+import Sites.GoodFon as GoodFon
+import Sites.BadFon as BadFon
+import Sites.Zastavki as Zastavki
 
 def Chose(LogFile, Options):
         site = random.randint(1, 4)

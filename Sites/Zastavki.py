@@ -5,7 +5,7 @@ __author__ = 'nrot'
 import random
 
 import requests
-from lxml import html
+import lxml
 
 
 def Zastavki(LogFile, Options):
@@ -14,7 +14,7 @@ def Zastavki(LogFile, Options):
 
     try:
         res = requests.get('http://www.zastavki.com/rus/Anime/')
-        parsed_body = html.fromstring(res.text)
+        parsed_body = lxml.html.fromstring(res.text)
         page_info = parsed_body.xpath('//td[@id="at-all-info"]/*')
         max_page = int(page_info[1].text)
         now_page = random.randint(1, max_page-1)
@@ -25,7 +25,7 @@ def Zastavki(LogFile, Options):
         return 'Error connect'
 
     res = requests.get(adr)
-    parsed_body = html.fromstring(res.text)
+    parsed_body = lxml.html.fromstring(res.text)
 
     now_image = random.randint(0, 10)
 
@@ -35,7 +35,7 @@ def Zastavki(LogFile, Options):
 
     img_html = 'http://www.zastavki.com' + chose_img[now_image].attrib['href']
     res = requests.get(img_html)
-    parsed_body = html.fromstring(res.text)
+    parsed_body = lxml.html.fromstring(res.text)
 
     pre_end_link = parsed_body.xpath('//a[@class="original-link"]')
     end_link = 'http://www.zastavki.com/' + pre_end_link[0].attrib['href']

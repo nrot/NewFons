@@ -18,9 +18,8 @@ def main():
         OptionError.close()
         return 'Option file error'
     PATH_TO_IMG_LIB = Option.PathToImage
-    PathLog = Option.OptionPathLog
     #'~/.NewFonsLog'
-    log = FileClassPack.DoubleLog(str(PathLog), 'log.txt')
+    log = FileClassPack.DoubleLog(str(Option.OptionPathLog), 'log.txt')
     if log.Error == 'Open Error':
         return 'Open Error'
 
